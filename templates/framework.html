@@ -262,43 +262,6 @@
       font-weight: 700;
     }
 
-    /* Framework Visualization Styles */
-    .circuit-node {
-      fill: var(--quantum-accent);
-      stroke: #fff;
-      stroke-width: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .circuit-node:hover {
-      fill: var(--quantum-primary);
-      filter: drop-shadow(0 0 8px rgba(58, 90, 253, 0.4));
-    }
-
-    .circuit-line {
-      stroke: rgba(45, 52, 54, 0.2);
-      stroke-width: 2;
-    }
-
-    .circuit-text {
-      fill: var(--quantum-text);
-      font-size: 14px;
-      font-weight: 500;
-      text-anchor: middle;
-      pointer-events: none;
-    }
-
-    .node-pulse {
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(0, 168, 255, 0.4); }
-      70% { box-shadow: 0 0 0 15px rgba(0, 168, 255, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 168, 255, 0); }
-    }
-
     /* Module Cards */
     .module-card {
       cursor: pointer;
@@ -419,6 +382,8 @@
       align-items: center;
     }
   </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/framework.css') }}">
 </head>
 <body>
 <!-- 左侧导航栏 -->
@@ -428,25 +393,18 @@
         <span>QuBridge 导航</span>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="{{ url_for('home') }}" class="sidebar-link"><i class="fas fa-home"></i>首页</a></li>
-        <li><a href="{{ url_for('framework') }}" class="sidebar-link"><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
-        <li><a href="{{ url_for('demos') }}" class="sidebar-link"><i class="fas fa-play-circle"></i>算法演示</a></li>
-        <li><a href="{{ url_for('results') }}" class="sidebar-link"><i class="fas fa-chart-bar"></i>实验结果</a></li>
-        <li><a href="{{ url_for('simulator') }}" class="sidebar-link"><i class="fas fa-microchip"></i>量子模拟器</a></li>
-        <li><a href="{{ url_for('qubit_routing') }}" class="sidebar-link"><i class="fas fa-route"></i>量子比特路由</a></li>
-        <li><a href="{{ url_for('News') }}" class="sidebar-link"><i class="fas fa-newspaper"></i>最新动态</a></li>
-        <li><a href="{{ url_for('about') }}" class="sidebar-link"><i class="fas fa-info-circle"></i>关于项目</a></li>
+        <li><a href="{{ url_for('home') }}" class="sidebar-link{% if request.endpoint == 'home' %} active{% endif %}"{% if request.endpoint == 'home' %} aria-current="page"{% endif %}><i class="fas fa-home"></i>首页</a></li>
+        <li><a href="{{ url_for('framework') }}" class="sidebar-link{% if request.endpoint == 'framework' %} active{% endif %}"{% if request.endpoint == 'framework' %} aria-current="page"{% endif %}><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
+        <li><a href="{{ url_for('demos') }}" class="sidebar-link{% if request.endpoint == 'demos' %} active{% endif %}"{% if request.endpoint == 'demos' %} aria-current="page"{% endif %}><i class="fas fa-play-circle"></i>算法演示</a></li>
+        <li><a href="{{ url_for('results') }}" class="sidebar-link{% if request.endpoint == 'results' %} active{% endif %}"{% if request.endpoint == 'results' %} aria-current="page"{% endif %}><i class="fas fa-chart-bar"></i>实验结果</a></li>
+        <li><a href="{{ url_for('simulator') }}" class="sidebar-link{% if request.endpoint == 'simulator' %} active{% endif %}"{% if request.endpoint == 'simulator' %} aria-current="page"{% endif %}><i class="fas fa-microchip"></i>量子模拟器</a></li>
+        <li><a href="{{ url_for('qubit_routing') }}" class="sidebar-link{% if request.endpoint == 'qubit_routing' %} active{% endif %}"{% if request.endpoint == 'qubit_routing' %} aria-current="page"{% endif %}><i class="fas fa-route"></i>量子比特路由</a></li>
+        <li><a href="{{ url_for('circuit_partition') }}" class="sidebar-link{% if request.endpoint == 'circuit_partition' %} active{% endif %}"{% if request.endpoint == 'circuit_partition' %} aria-current="page"{% endif %}><i class="fas fa-project-diagram"></i>线路分区映射</a></li>
+        <li><a href="{{ url_for('News') }}" class="sidebar-link{% if request.endpoint == 'News' %} active{% endif %}"{% if request.endpoint == 'News' %} aria-current="page"{% endif %}><i class="fas fa-newspaper"></i>最新动态</a></li>
+        <li><a href="{{ url_for('about') }}" class="sidebar-link{% if request.endpoint == 'about' %} active{% endif %}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}><i class="fas fa-info-circle"></i>关于项目</a></li>
     </ul>
 
-<div class="sidebar-footer">
-  <div class="sidebar-user">
-    <i class="fas fa-user-circle"></i>
-    <span>researcher_liu</span>  <!-- 模拟登录状态，原模板变量无法解析故替换为示例 -->
-  </div>
-  <a class="btn quantum-btn" href="{{ url_for('logout') }}">
-    <i class="fas fa-sign-out-alt me-2"></i>退出登录
-  </a>
-</div>
+{% include '_sidebar_footer.html' %}
 
 </div>
 
@@ -486,8 +444,17 @@
 
       <div class="row mb-5">
         <div class="col-lg-8 mb-4">
-          <div class="quantum-card h-100">
-            <div id="framework-visualization" style="height: 500px;"></div>
+          <div class="quantum-card framework-card h-100">
+            <div class="framework-toolbar" role="group" aria-label="框架图视图控制">
+              <span class="framework-toolbar-title">框架流程图</span>
+              <button type="button" id="framework-zoom-out" aria-label="缩小框架图" title="缩小">−</button>
+              <output class="framework-zoom-level" id="framework-zoom-level" aria-label="缩放比例">100%</output>
+              <button type="button" id="framework-zoom-in" aria-label="放大框架图" title="放大">+</button>
+              <button type="button" id="framework-fit">居中适配</button>
+              <button type="button" id="framework-reset">重置布局</button>
+            </div>
+            <div id="framework-visualization"></div>
+            <p class="framework-hint" id="framework-help">拖动节点调整位置 · 拖动空白处平移 · 滚轮或双指缩放 · 点击核心组件查看详情<br>键盘：方向键平移，+ / − 缩放，0 居中适配</p>
           </div>
         </div>
 
@@ -652,6 +619,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/framework.js') }}"></script>
 <script>
   // 模块详情数据
   const moduleDetails = {
@@ -760,137 +728,6 @@
       });
     });
   });
-
-  // 初始化框架可视化
-  function initFrameworkVisualization() {
-    const container = document.getElementById("framework-visualization");
-    container.innerHTML = ''; // 清空以防重复
-    const svg = d3.select("#framework-visualization")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .attr("viewBox", "0 0 800 500");
-
-    // 添加背景网格
-    for (let x = 0; x <= 800; x += 40) {
-      svg.append("line")
-              .attr("x1", x)
-              .attr("y1", 0)
-              .attr("x2", x)
-              .attr("y2", 500)
-              .attr("stroke", "rgba(0, 0, 0, 0.03)")
-              .attr("stroke-width", 1);
-    }
-
-    for (let y = 0; y <= 500; y += 40) {
-      svg.append("line")
-              .attr("x1", 0)
-              .attr("y1", y)
-              .attr("x2", 800)
-              .attr("y2", y)    // 修复原来写错 x2 的地方
-              .attr("stroke", "rgba(0, 0, 0, 0.03)")
-              .attr("stroke-width", 1);
-    }
-
-    // 定义节点位置
-    const nodes = [
-      { id: "parallel", name: "并行管理器", x: 200, y: 250, color: "#6c5ce7", icon: "fa-cogs" },
-      { id: "compiler", name: "编译器", x: 400, y: 150, color: "#00a8ff", icon: "fa-code" },
-      { id: "scheduler", name: "调度器", x: 400, y: 350, color: "#3a5afd", icon: "fa-tasks" },
-      { id: "input", name: "量子程序集", x: 50, y: 250, color: "#636e72", icon: "fa-file-code" },
-      { id: "output", name: "执行结果", x: 650, y: 250, color: "#00b894", icon: "fa-chart-bar" },
-      { id: "hardware", name: "量子硬件", x: 550, y: 250, color: "#e84118", icon: "fa-microchip" }
-    ];
-
-    // 定义连接线
-    const links = [
-      { source: "input", target: "parallel" },
-      { source: "parallel", target: "compiler" },
-      { source: "parallel", target: "scheduler" },
-      { source: "compiler", target: "scheduler" },
-      { source: "scheduler", target: "hardware" },
-      { source: "hardware", target: "output" }
-    ];
-
-    // 绘制连接线
-    svg.selectAll(".circuit-line")
-            .data(links)
-            .enter()
-            .append("line")
-            .attr("class", "circuit-line")
-            .attr("x1", d => nodes.find(n => n.id === d.source).x)
-            .attr("y1", d => nodes.find(n => n.id === d.source).y)
-            .attr("x2", d => nodes.find(n => n.id === d.target).x)
-            .attr("y2", d => nodes.find(n => n.id === d.target).y);
-
-    // 绘制节点
-    const nodeGroups = svg.selectAll(".circuit-node")
-            .data(nodes)
-            .enter()
-            .append("g")
-            .attr("class", "circuit-node")
-            .attr("transform", d => `translate(${d.x},${d.y})`)
-            .on("click", function(event, d) {
-              showModuleDetails(d.id);
-              // 添加点击效果
-              d3.select(this).select("circle")
-                      .classed("node-pulse", true)
-                      .transition()
-                      .duration(1000)
-                      .on("end", () => d3.select(this).select("circle").classed("node-pulse", false));
-            });
-
-    nodeGroups.append("circle")
-            .attr("r", 37)
-            .attr("fill", d => d.color)
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 2);
-
-    // 简化文本，因为无法渲染FontAwesome，但显示名称即可
-    nodeGroups.append("text")
-            .attr("class", "circuit-text")
-            .attr("dy", 6)
-            .text(d => d.name);
-
-    // 添加小图标指示（模拟图标文字）
-    nodeGroups.append("text")
-            .attr("class", "circuit-text")
-            .attr("dy", 28)
-            .attr("font-family", "'Font Awesome 6 Free', 'FontAwesome'")
-            .attr("font-weight", "900")
-            .style("font-size", "18px")
-            .text(d => {
-              // 简单映射，实际可能无法显示所有图标，但保留尝试
-              if(d.icon === "fa-cogs") return "⚙️";
-              if(d.icon === "fa-code") return "📄";
-              if(d.icon === "fa-tasks") return "📋";
-              if(d.icon === "fa-file-code") return "📁";
-              if(d.icon === "fa-chart-bar") return "📊";
-              if(d.icon === "fa-microchip") return "💻";
-              return "●";
-            });
-
-    // 添加箭头
-    links.forEach(link => {
-      const source = nodes.find(n => n.id === link.source);
-      const target = nodes.find(n => n.id === link.target);
-
-      const dx = target.x - source.x;
-      const dy = target.y - source.y;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const unitX = dx / length;
-      const unitY = dy / length;
-
-      const arrowX = target.x - unitX * 30;
-      const arrowY = target.y - unitY * 30;
-      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-
-      svg.append("path")
-              .attr("d", `M ${arrowX - 8},${arrowY - 4} L ${arrowX},${arrowY} L ${arrowX - 8},${arrowY + 4} Z`)
-              .attr("fill", "rgba(45, 52, 54, 0.4)")
-              .attr("transform", `rotate(${angle} ${arrowX} ${arrowY})`);
-    });
-  }
 
   // 显示模块详情
   function showModuleDetails(moduleId) {

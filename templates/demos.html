@@ -310,6 +310,7 @@
       color: var(--quantum-text);
     }
   </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
 </head>
 <body>
 <!-- 左侧导航栏 -->
@@ -319,25 +320,18 @@
         <span>QuBridge 导航</span>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="{{ url_for('home') }}" class="sidebar-link"><i class="fas fa-home"></i>首页</a></li>
-        <li><a href="{{ url_for('framework') }}" class="sidebar-link"><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
-        <li><a href="{{ url_for('demos') }}" class="sidebar-link active"><i class="fas fa-play-circle"></i>算法演示</a></li>
-        <li><a href="{{ url_for('results') }}" class="sidebar-link"><i class="fas fa-chart-bar"></i>实验结果</a></li>
-        <li><a href="{{ url_for('simulator') }}" class="sidebar-link"><i class="fas fa-microchip"></i>量子模拟器</a></li>
-        <li><a href="{{ url_for('qubit_routing') }}" class="sidebar-link"><i class="fas fa-route"></i>量子比特路由</a></li>
-        <li><a href="{{ url_for('News') }}" class="sidebar-link"><i class="fas fa-newspaper"></i>最新动态</a></li>
-        <li><a href="{{ url_for('about') }}" class="sidebar-link"><i class="fas fa-info-circle"></i>关于项目</a></li>
+        <li><a href="{{ url_for('home') }}" class="sidebar-link{% if request.endpoint == 'home' %} active{% endif %}"{% if request.endpoint == 'home' %} aria-current="page"{% endif %}><i class="fas fa-home"></i>首页</a></li>
+        <li><a href="{{ url_for('framework') }}" class="sidebar-link{% if request.endpoint == 'framework' %} active{% endif %}"{% if request.endpoint == 'framework' %} aria-current="page"{% endif %}><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
+        <li><a href="{{ url_for('demos') }}" class="sidebar-link{% if request.endpoint == 'demos' %} active{% endif %}"{% if request.endpoint == 'demos' %} aria-current="page"{% endif %}><i class="fas fa-play-circle"></i>算法演示</a></li>
+        <li><a href="{{ url_for('results') }}" class="sidebar-link{% if request.endpoint == 'results' %} active{% endif %}"{% if request.endpoint == 'results' %} aria-current="page"{% endif %}><i class="fas fa-chart-bar"></i>实验结果</a></li>
+        <li><a href="{{ url_for('simulator') }}" class="sidebar-link{% if request.endpoint == 'simulator' %} active{% endif %}"{% if request.endpoint == 'simulator' %} aria-current="page"{% endif %}><i class="fas fa-microchip"></i>量子模拟器</a></li>
+        <li><a href="{{ url_for('qubit_routing') }}" class="sidebar-link{% if request.endpoint == 'qubit_routing' %} active{% endif %}"{% if request.endpoint == 'qubit_routing' %} aria-current="page"{% endif %}><i class="fas fa-route"></i>量子比特路由</a></li>
+        <li><a href="{{ url_for('circuit_partition') }}" class="sidebar-link{% if request.endpoint == 'circuit_partition' %} active{% endif %}"{% if request.endpoint == 'circuit_partition' %} aria-current="page"{% endif %}><i class="fas fa-project-diagram"></i>线路分区映射</a></li>
+        <li><a href="{{ url_for('News') }}" class="sidebar-link{% if request.endpoint == 'News' %} active{% endif %}"{% if request.endpoint == 'News' %} aria-current="page"{% endif %}><i class="fas fa-newspaper"></i>最新动态</a></li>
+        <li><a href="{{ url_for('about') }}" class="sidebar-link{% if request.endpoint == 'about' %} active{% endif %}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}><i class="fas fa-info-circle"></i>关于项目</a></li>
     </ul>
 
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <i class="fas fa-user-circle"></i>
-        <span>{{ current_user.username if current_user.is_authenticated else "未登录" }}</span>
-      </div>
-      <a class="btn quantum-btn w-100" href="{{ url_for('logout') }}">
-        <i class="fas fa-sign-out-alt me-2"></i>退出登录
-      </a>
-    </div>
+    {% include '_sidebar_footer.html' %}
 </div>
 
 <!-- 移动端菜单切换按钮 -->

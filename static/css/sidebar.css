@@ -1,0 +1,96 @@
+/* Shared account area: the menu may scroll, but the signed-in user stays put. */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: 20px 0 0;
+  box-sizing: border-box;
+  overflow: visible !important;
+}
+
+.sidebar-nav .sidebar-brand {
+  flex: 0 0 auto;
+}
+
+.sidebar-nav .sidebar-menu {
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
+.sidebar-nav .sidebar-footer {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding: 16px 16px 20px;
+  border-top: 1px solid rgba(0, 168, 255, 0.1);
+  background: #fff;
+}
+
+.sidebar-nav .sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  margin: 0 0 12px;
+  color: var(--quantum-text-light, #636e72);
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.sidebar-nav .sidebar-user i {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+  color: var(--quantum-accent, #00a8ff);
+}
+
+.sidebar-nav .sidebar-user span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sidebar-nav .sidebar-footer .quantum-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #6c5ce7, #00a8ff);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+/* Keep all links reachable on short screens, without covering the account. */
+@media (max-height: 760px) {
+  .sidebar-nav .sidebar-menu {
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .sidebar-nav .hover-submenu {
+    position: static;
+    display: none;
+    width: 100%;
+    padding-left: 20px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .sidebar-nav .sidebar-item-has-children:hover .hover-submenu,
+  .sidebar-nav .sidebar-item-has-children:focus-within .hover-submenu {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+  }
+}

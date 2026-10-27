@@ -32,9 +32,9 @@ try:
         calculate_parallel_pst as standard_calculate_pst,
     )
     STANDARD_MODULE_AVAILABLE = True
-    print("✓ 标准量子分区模块加载成功")
+    print("[OK] 标准量子分区模块加载成功")
 except ImportError as e:
-    print(f"✗ 标准量子分区模块加载失败: {e}")
+    print(f"[ERROR] 标准量子分区模块加载失败: {e}")
     STANDARD_MODULE_AVAILABLE = False
 
 # 尝试导入自适应算法模块
@@ -56,16 +56,26 @@ try:
         calculate_parallel_pst as adaptive_calculate_pst,
     )
     ADAPTIVE_MODULE_AVAILABLE = True
-    print("✓ 自适应量子分区模块加载成功")
+    print("[OK] 自适应量子分区模块加载成功")
 except ImportError as e:
-    print(f"✗ 自适应量子分区模块加载失败: {e}")
+    print(f"[ERROR] 自适应量子分区模块加载失败: {e}")
     ADAPTIVE_MODULE_AVAILABLE = False
+
+# 尝试导入线路逻辑比特分区与拓扑映射模块（融合自「代码/」项目）
+try:
+    import routing_partition
+    ROUTING_MODULE_AVAILABLE = True
+    print("[OK] 线路分区与拓扑映射模块加载成功")
+except ImportError as e:
+    routing_partition = None
+    ROUTING_MODULE_AVAILABLE = False
+    print(f"[ERROR] 线路分区与拓扑映射模块加载失败: {e}")
 
 app = Flask(__name__)
 app.secret_key = 'quantum-parallel-visualization'
 
 # 数据库配置
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('QUBRIDGE_DATABASE_URI', 'sqlite:///users.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 文件上传配置
@@ -95,6 +105,16 @@ processing_status = {
     'gif_files': []
 }
 
+# 线路分区与拓扑映射功能的处理状态（独立于上方的量子模拟处理状态）
+routing_status = {
+    'is_processing': False,
+    'progress': 0,
+    'current_step': '',
+    'message': '',
+    'result': None,
+    'error': None
+}
+
 # 用户模型
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -105,7 +125,7 @@ class User(db.Model, UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 
 # 创建数据库
@@ -499,6 +519,160 @@ def about():
 @login_required
 def qubit_routing():
     return render_template('qubit-routing.html')
+
+
+@app.route('/qubit-routing/parse', methods=['POST'])
+@login_required
+def parse_routing_qasm():
+    """Parse an uploaded OpenQASM 2 circuit for the routing work queue."""
+    source = request.files.get('qasm_file')
+    if source is None or not source.filename or not allowed_file(source.filename):
+        return jsonify({'success': False, 'error': '请选择 .qasm 文件'}), 400
+
+    raw = source.read(1024 * 1024 + 1)
+    if len(raw) > 1024 * 1024:
+        return jsonify({'success': False, 'error': 'QASM 文件不能超过 1 MB'}), 400
+    try:
+        qasm = raw.decode('utf-8-sig')
+    except UnicodeDecodeError:
+        return jsonify({'success': False, 'error': 'QASM 文件必须采用 UTF-8 编码'}), 400
+
+    try:
+        from qiskit import QuantumCircuit
+    except ImportError:
+        return jsonify({'success': False, 'error': '服务器未安装 Qiskit，请先配置 Python 环境'}), 503
+
+    try:
+        circuit = QuantumCircuit.from_qasm_str(qasm)
+    except Exception as exc:
+        return jsonify({'success': False, 'error': f'QASM 解析失败：{exc}'}), 400
+
+    if not circuit.num_qubits or circuit.num_qubits > 127:
+        return jsonify({'success': False, 'error': '线路必须包含 1–127 个逻辑量子比特'}), 400
+    gates = []
+    for instruction in circuit.data:
+        operation = instruction.operation
+        if operation.name in {'barrier', 'measure'}:
+            continue
+        gates.append({
+            'type': operation.name.upper(),
+            'qubits': [circuit.find_bit(q).index for q in instruction.qubits]
+        })
+        if len(gates) > 2000:
+            return jsonify({'success': False, 'error': '线路最多支持 2000 个量子门'}), 400
+    if not gates:
+        return jsonify({'success': False, 'error': '文件中没有可路由的量子门'}), 400
+    return jsonify({'success': True, 'circuit': {
+        'name': source.filename, 'logicalQubits': circuit.num_qubits, 'gates': gates
+    }})
+
+
+@app.route('/circuit-partition')
+@login_required
+def circuit_partition():
+    """线路逻辑比特分区与拓扑映射页面"""
+    return render_template('circuit-partition.html')
+
+
+# ========== 线路分区与拓扑映射 API ==========
+
+@app.route('/circuit_partition/status')
+@login_required
+def circuit_partition_status():
+    """获取线路分区处理状态"""
+    return jsonify(routing_status)
+
+
+@app.route('/circuit_partition/run', methods=['POST'])
+@login_required
+def circuit_partition_run():
+    """接收 QASM 文件 + 拓扑参数，后台执行线路分区与拓扑映射"""
+    global routing_status
+
+    if not ROUTING_MODULE_AVAILABLE:
+        return jsonify({
+            'success': False,
+            'error': '线路分区模块不可用，请检查依赖（qiskit / networkx / matplotlib）'
+        }), 500
+
+    if routing_status['is_processing']:
+        return jsonify({'success': False, 'error': '系统正在处理上一个请求，请稍后再试'})
+
+    if 'qasm_file' not in request.files:
+        return jsonify({'success': False, 'error': '没有选择文件'})
+
+    file = request.files['qasm_file']
+    if file.filename == '':
+        return jsonify({'success': False, 'error': '没有选择文件'})
+
+    if not allowed_file(file.filename):
+        return jsonify({'success': False, 'error': '仅支持 .qasm 文件'})
+
+    # 分区数
+    try:
+        num_partitions = int(request.form.get('num_partitions', 2))
+        num_partitions = max(2, min(num_partitions, 8))
+    except ValueError:
+        num_partitions = 2
+
+    # 是否启用 b1/b2 网格搜索（慢）
+    search = request.form.get('search', 'false').lower() in ('true', '1', 'yes', 'on')
+
+    # 目标拓扑边列表（JSON 数组 [[u,v], ...]，0 起始）
+    target_edges = None
+    topology_raw = request.form.get('target_edges', '')
+    if topology_raw:
+        try:
+            edges = json.loads(topology_raw)
+            if isinstance(edges, list):
+                target_edges = [[int(u), int(v)] for u, v in edges]
+        except (ValueError, TypeError, json.JSONDecodeError):
+            return jsonify({'success': False, 'error': '目标拓扑边列表格式错误，应为 [[u,v],...] 的 JSON 数组'})
+
+    # 保存上传文件
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(filepath)
+
+    # 后台线程执行
+    def run_in_background():
+        global routing_status
+        try:
+            routing_status['is_processing'] = True
+            routing_status['error'] = None
+            routing_status['result'] = None
+            routing_status['progress'] = 10
+            routing_status['current_step'] = '解析线路'
+            routing_status['message'] = '正在加载 QASM 并解析门列表...'
+
+            result = routing_partition.run_routing(
+                filepath,
+                num_partitions=num_partitions,
+                target_edges=target_edges,
+                search=search
+            )
+
+            routing_status['progress'] = 100
+            routing_status['current_step'] = '完成'
+            routing_status['message'] = '分区与映射完成'
+            routing_status['result'] = result
+        except Exception as e:
+            print(f"线路分区处理失败: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            routing_status['error'] = str(e)
+        finally:
+            routing_status['is_processing'] = False
+
+    thread = threading.Thread(target=run_in_background)
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({
+        'success': True,
+        'message': f'开始处理 {filename}，分区数 {num_partitions}',
+        'num_partitions': num_partitions
+    })
 
 
 # ========== 量子模拟器API路由 ==========
@@ -1021,9 +1195,9 @@ if __name__ == '__main__':
     print("=" * 70)
     print("量子线路并行分区可视化系统")
     print("=" * 70)
-    print(f"标准算法模块: {'✓ 已加载' if STANDARD_MODULE_AVAILABLE else '✗ 未加载'}")
-    print(f"自适应算法模块: {'✓ 已加载' if ADAPTIVE_MODULE_AVAILABLE else '✗ 未加载'}")
-    print(f"数据库: {'✓ 已连接' if os.path.exists('users.db') else '✗ 未连接'}")
+    print(f"标准算法模块: {'已加载' if STANDARD_MODULE_AVAILABLE else '未加载'}")
+    print(f"自适应算法模块: {'已加载' if ADAPTIVE_MODULE_AVAILABLE else '未加载'}")
+    print("数据库: 已连接")
     print(f"上传目录: {app.config['UPLOAD_FOLDER']}")
     print(f"默认用户: admin / admin123")
     print("\n访问地址:")
