@@ -1,0 +1,9 @@
+<div class="sidebar-footer">
+  <div class="sidebar-user">
+    <i class="fas fa-user-circle" aria-hidden="true"></i>
+    <span title="{{ current_user.username if current_user.is_authenticated else '未登录' }}">{{ current_user.username if current_user.is_authenticated else '未登录' }}</span>
+  </div>
+  <a class="btn quantum-btn" href="{{ url_for('logout') }}">
+    <i class="fas fa-sign-out-alt me-2" aria-hidden="true"></i>退出登录
+  </a>
+</div>

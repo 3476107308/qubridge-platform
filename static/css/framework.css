@@ -1,0 +1,152 @@
+.quantum-card.framework-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.quantum-card.framework-card:hover {
+  transform: none;
+}
+
+.framework-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #e9edf5;
+  background: #fff;
+}
+
+.framework-toolbar-title {
+  margin-right: auto;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.framework-toolbar button {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #dce3ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #475569;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.framework-toolbar button:hover {
+  border-color: #3a5afd;
+  background: #f1f5ff;
+  color: #3a5afd;
+}
+
+.framework-toolbar button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.framework-toolbar button:focus-visible,
+.framework-canvas:focus-visible {
+  outline: 2px solid #3a5afd;
+  outline-offset: -2px;
+}
+
+.framework-zoom-level {
+  min-width: 42px;
+  color: #64748b;
+  text-align: center;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+#framework-visualization {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 500px;
+  background: #fbfcff;
+}
+
+.framework-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.framework-canvas.is-panning,
+.framework-canvas .framework-node.is-dragging {
+  cursor: grabbing;
+}
+
+.framework-node {
+  cursor: grab;
+  outline: none;
+}
+
+.framework-node .node-halo {
+  fill: none;
+  stroke: var(--node-color);
+  stroke-width: 2;
+  opacity: 0.15;
+}
+
+.framework-node:hover .node-halo,
+.framework-node:focus-visible .node-halo,
+.framework-node.is-dragging .node-halo {
+  opacity: 0.65;
+}
+
+.framework-node .node-disc {
+  fill: var(--node-color);
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.framework-node .node-icon {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.framework-node .node-label {
+  fill: #334155;
+  stroke: #fbfcff;
+  stroke-width: 4px;
+  paint-order: stroke;
+  font-size: 14px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.framework-edge {
+  stroke: #a9b6cb;
+  stroke-width: 1.7;
+  pointer-events: none;
+}
+
+.framework-hint {
+  margin: 0;
+  padding: 12px 18px;
+  border-top: 1px solid #e9edf5;
+  background: #fff;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+@media (max-width: 576px) {
+  .framework-toolbar-title { flex-basis: 100%; }
+  #framework-visualization { min-height: 380px; }
+}
