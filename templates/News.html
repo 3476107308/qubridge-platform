@@ -332,21 +332,21 @@
         <span>QuBridge 导航</span>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="#" class="sidebar-link"><i class="fas fa-home"></i>首页</a></li>
-        <li><a href="#" class="sidebar-link"><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
-        <li><a href="#" class="sidebar-link"><i class="fas fa-play-circle"></i>算法演示</a></li>
-        <li><a href="#" class="sidebar-link"><i class="fas fa-chart-bar"></i>实验结果</a></li>
-        <li><a href="#" class="sidebar-link"><i class="fas fa-microchip"></i>量子模拟器</a></li>
-        <li><a href="#" class="sidebar-link"><i class="fas fa-route"></i>量子比特路由</a></li>
-        <li><a href="#" class="sidebar-link active"><i class="fas fa-newspaper"></i>最新动态</a></li>
-        <li><a href="#" class="sidebar-link"><i class="fas fa-info-circle"></i>关于项目</a></li>
+        <li><a href="{{ url_for('home') }}" class="sidebar-link"><i class="fas fa-home"></i>首页</a></li>
+        <li><a href="{{ url_for('framework') }}" class="sidebar-link"><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
+        <li><a href="{{ url_for('demos') }}" class="sidebar-link"><i class="fas fa-play-circle"></i>算法演示</a></li>
+        <li><a href="{{ url_for('results') }}" class="sidebar-link"><i class="fas fa-chart-bar"></i>实验结果</a></li>
+        <li><a href="{{ url_for('simulator') }}" class="sidebar-link"><i class="fas fa-microchip"></i>量子模拟器</a></li>
+        <li><a href="{{ url_for('qubit_routing') }}" class="sidebar-link"><i class="fas fa-route"></i>量子比特路由</a></li>
+        <li><a href="{{ url_for('News') }}" class="sidebar-link active"><i class="fas fa-newspaper"></i>最新动态</a></li>
+        <li><a href="{{ url_for('about') }}" class="sidebar-link"><i class="fas fa-info-circle"></i>关于项目</a></li>
     </ul>
     <div class="sidebar-footer">
         <div class="sidebar-user">
             <i class="fas fa-user-circle"></i>
             <span>量子探索者</span>
         </div>
-        <a class="btn quantum-btn w-100" href="#"><i class="fas fa-sign-out-alt me-2"></i>退出登录</a>
+        <a class="btn quantum-btn w-100" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>退出登录</a>
     </div>
 </div>
 
@@ -364,8 +364,8 @@
             <div class="content-subtitle">全球量子计算领域最新资讯与研究进展</div>
         </div>
         <div class="content-actions d-flex gap-2">
-            <a class="btn btn-outline-primary btn-sm" href="#"><i class="fas fa-home me-1"></i>首页</a>
-            <a class="btn quantum-btn btn-sm" href="#"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i>首页</a>
+            <a class="btn quantum-btn btn-sm" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
         </div>
     </div>
 
