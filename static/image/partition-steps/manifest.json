@@ -1,0 +1,731 @@
+{
+  "version": 1,
+  "demos": {
+    "gsp_linear": {
+      "mode": "steps",
+      "width": 1327,
+      "height": 801,
+      "frames": [
+        {
+          "src": "gsp_linear/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "gsp_linear/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "gsp_linear/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "gsp_linear/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "gsp_linear/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "gsp_linear/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "gsp_grid": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "gsp_grid/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "gsp_grid/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "gsp_grid/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "gsp_grid/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "gsp_grid/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "gsp_grid/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "gsp_ibmq": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "gsp_ibmq/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "gsp_ibmq/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "gsp_ibmq/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "gsp_ibmq/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "gsp_ibmq/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "gsp_ibmq/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "gsp_custom": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "gsp_custom/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "gsp_custom/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "gsp_custom/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "gsp_custom/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "gsp_custom/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "gsp_custom/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "qhsp_linear": {
+      "mode": "steps",
+      "width": 1327,
+      "height": 801,
+      "frames": [
+        {
+          "src": "qhsp_linear/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "qhsp_linear/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "qhsp_linear/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "qhsp_linear/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "qhsp_linear/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "qhsp_linear/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "qhsp_grid": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "qhsp_grid/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "qhsp_grid/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "qhsp_grid/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "qhsp_grid/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "qhsp_grid/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "qhsp_grid/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "qhsp_ibmq": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "qhsp_ibmq/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "qhsp_ibmq/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "qhsp_ibmq/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "qhsp_ibmq/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "qhsp_ibmq/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "qhsp_ibmq/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "qhsp_custom": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "qhsp_custom/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "qhsp_custom/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "qhsp_custom/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "qhsp_custom/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "qhsp_custom/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "qhsp_custom/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "dqp_linear": {
+      "mode": "steps",
+      "width": 1327,
+      "height": 801,
+      "frames": [
+        {
+          "src": "dqp_linear/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "dqp_linear/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "dqp_linear/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "dqp_linear/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "dqp_linear/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "dqp_linear/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "dqp_grid": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "dqp_grid/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "dqp_grid/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "dqp_grid/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "dqp_grid/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "dqp_grid/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "dqp_grid/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "dqp_ibmq": {
+      "mode": "steps",
+      "width": 1163,
+      "height": 801,
+      "frames": [
+        {
+          "src": "dqp_ibmq/00.webp",
+          "sourceFrame": 0,
+          "duration": 2000,
+          "title": "初始拓扑",
+          "description": "观察量子比特的初始排列。点击下一步，开始查看分区过程。"
+        },
+        {
+          "src": "dqp_ibmq/01.webp",
+          "sourceFrame": 8,
+          "duration": 2000,
+          "title": "开始分区",
+          "description": "观察第一轮分区时，节点颜色与区域划分的变化。"
+        },
+        {
+          "src": "dqp_ibmq/02.webp",
+          "sourceFrame": 15,
+          "duration": 2000,
+          "title": "扩展分区",
+          "description": "对照上一步，查看分区继续展开后的节点归属。"
+        },
+        {
+          "src": "dqp_ibmq/03.webp",
+          "sourceFrame": 20,
+          "duration": 2000,
+          "title": "形成分区",
+          "description": "观察当前已形成的分区，比较不同颜色的节点区域。"
+        },
+        {
+          "src": "dqp_ibmq/04.webp",
+          "sourceFrame": 30,
+          "duration": 2000,
+          "title": "后续调整",
+          "description": "继续观察演示中的边界与分区变化，可返回上一步对照。"
+        },
+        {
+          "src": "dqp_ibmq/05.webp",
+          "sourceFrame": 39,
+          "duration": 2000,
+          "title": "演示完成",
+          "description": "查看最后的演示画面；可返回任意步骤，或重新播放。"
+        }
+      ]
+    },
+    "dqp_custom": {
+      "mode": "continuous",
+      "width": 1164,
+      "height": 701,
+      "frames": [
+        {
+          "src": "dqp_custom/00.webp",
+          "sourceFrame": 0,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/01.webp",
+          "sourceFrame": 1,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/02.webp",
+          "sourceFrame": 2,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/03.webp",
+          "sourceFrame": 3,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/04.webp",
+          "sourceFrame": 4,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/05.webp",
+          "sourceFrame": 5,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/06.webp",
+          "sourceFrame": 6,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/07.webp",
+          "sourceFrame": 7,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/08.webp",
+          "sourceFrame": 8,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/09.webp",
+          "sourceFrame": 9,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/10.webp",
+          "sourceFrame": 10,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/11.webp",
+          "sourceFrame": 11,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/12.webp",
+          "sourceFrame": 12,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/13.webp",
+          "sourceFrame": 13,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/14.webp",
+          "sourceFrame": 14,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/15.webp",
+          "sourceFrame": 15,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/16.webp",
+          "sourceFrame": 16,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/17.webp",
+          "sourceFrame": 17,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/18.webp",
+          "sourceFrame": 18,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/19.webp",
+          "sourceFrame": 19,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/20.webp",
+          "sourceFrame": 20,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/21.webp",
+          "sourceFrame": 21,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/22.webp",
+          "sourceFrame": 22,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/23.webp",
+          "sourceFrame": 23,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/24.webp",
+          "sourceFrame": 24,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/25.webp",
+          "sourceFrame": 25,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/26.webp",
+          "sourceFrame": 26,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/27.webp",
+          "sourceFrame": 27,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/28.webp",
+          "sourceFrame": 28,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/29.webp",
+          "sourceFrame": 29,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/30.webp",
+          "sourceFrame": 30,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/31.webp",
+          "sourceFrame": 31,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/32.webp",
+          "sourceFrame": 32,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/33.webp",
+          "sourceFrame": 33,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/34.webp",
+          "sourceFrame": 34,
+          "duration": 80
+        },
+        {
+          "src": "dqp_custom/35.webp",
+          "sourceFrame": 35,
+          "duration": 80
+        }
+      ]
+    }
+  }
+}

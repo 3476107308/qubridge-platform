@@ -273,20 +273,6 @@
             background: linear-gradient(90deg, var(--quantum-accent), transparent);
         }
 
-        .content-header {
-            margin: 20px 24px 18px;
-            padding: 16px 18px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 168, 255, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        @media (max-width: 768px) {
-            .content-header { margin: 78px 14px 16px; flex-direction: column; align-items: flex-start; }
-        }
 
         .quantum-btn {
             background: linear-gradient(135deg, var(--quantum-secondary), var(--quantum-accent));
@@ -323,6 +309,7 @@
         }
     </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
 
@@ -352,18 +339,11 @@
 </button>
 
 <!-- 主内容区域 -->
-<div class="main-content">
+<div class="main-content site-content">
 
-    <div class="content-header">
-        <div>
-            <div class="content-title">最新动态</div>
-            <div class="content-subtitle">全球量子计算领域最新资讯与研究进展</div>
-        </div>
-        <div class="content-actions d-flex gap-2">
-            <a class="btn btn-outline-primary btn-sm" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i>首页</a>
-            <a class="btn quantum-btn btn-sm" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
-        </div>
-    </div>
+    {% with page_title='最新动态', page_description='全球量子计算领域最新资讯与研究进展', page_icon='news' %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
     <!-- 新闻卡片网格 — 图片填满卡片，文字悬浮 -->
     <section class="py-4" style="background: rgba(245, 246, 250, 0.9);">

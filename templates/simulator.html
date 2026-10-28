@@ -321,18 +321,6 @@
             box-shadow: 0 8px 16px rgba(0,168,255,0.3);
         }
 
-        .content-header {
-            margin: 20px 24px 18px;
-            padding: 16px 18px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 168, 255, 0.12);
-            display: flex;
-            gap: 14px;
-            align-items: center;
-            justify-content: space-between;
-        }
 
         .footer-info {
             background: rgba(255,255,255,0.9);
@@ -534,6 +522,7 @@
         }
     </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
 
@@ -590,17 +579,10 @@
 </button>
 
 <!-- 主内容区域 -->
-<div class="main-content">
-    <div class="content-header">
-        <div>
-            <div class="content-title" style="font-size:1.3rem; font-weight:700;">量子模拟器</div>
-            <div class="content-subtitle" style="color:var(--quantum-text-light);">交互式量子线路设计与仿真 · 当前算法: <span id="headerAlgoName">标准分区算法</span></div>
-        </div>
-        <div class="content-actions d-flex gap-2">
-            <a class="btn btn-outline-primary btn-sm" href="/"><i class="fas fa-home me-1"></i>首页</a>
-            <a class="btn quantum-btn btn-sm" href="/logout"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
-        </div>
-    </div>
+<div class="main-content site-content site-content--padded">
+    {% with page_title='量子模拟器', page_description='量子线路仿真与算法比较', page_icon='simulator', show_algorithm=true %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
     <!-- 量子模拟器主界面 -->
     <div class="container py-4">

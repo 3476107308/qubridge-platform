@@ -177,32 +177,8 @@
             }
         }
 
-        .content-header {
-            margin: 20px 24px 18px;
-            padding: 16px 18px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 168, 255, 0.12);
-            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
-            display: flex;
-            gap: 14px;
-            align-items: center;
-            justify-content: space-between;
-        }
 
-        .content-title {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--quantum-primary);
-            line-height: 1.2;
-        }
 
-        .content-subtitle {
-            margin-top: 4px;
-            font-size: 0.9rem;
-            color: var(--quantum-text-light);
-        }
 
         /* 英雄区布局 */
         .hero-section {
@@ -417,6 +393,7 @@
         }
     </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
     <div class="sidebar-nav">
@@ -442,17 +419,10 @@
         <i class="fas fa-bars"></i>
     </button>
 
-    <div class="main-content">
-        <div class="content-header">
-            <div>
-                <div class="content-title">首页</div>
-                <div class="content-subtitle">多量子线路映射仿真平台概览</div>
-            </div>
-            <div class="content-actions d-flex gap-2">
-                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i>首页</a>
-                <a class="btn quantum-btn btn-sm" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
-            </div>
-        </div>
+    <div class="main-content site-content">
+        {% with page_title='首页', page_description='多量子线路映射仿真平台概览', page_icon='home' %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
         <!-- 英雄区：标题 + 布局不变，图片完全重绘高级版本 -->
         <section class="hero-section">

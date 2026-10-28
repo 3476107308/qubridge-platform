@@ -149,23 +149,7 @@
       }
     }
 
-    .content-header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 168, 255, 0.2);
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
 
-    .content-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--quantum-accent);
-    }
 
     .quantum-card {
       background: var(--quantum-card-bg);
@@ -236,10 +220,6 @@
       color: var(--quantum-dark);
     }
 
-    .algo-btn.active {
-      background: linear-gradient(135deg, var(--quantum-primary), var(--quantum-secondary)) !important;
-      border-color: var(--quantum-primary) !important;
-    }
 
     .circuit-visualization {
       background: rgba(255, 255, 255, 0.7);
@@ -266,22 +246,6 @@
     .gate-rect:hover {
       fill: var(--quantum-highlight);
       transform: scale(1.05);
-    }
-
-    .gif-container {
-      position: relative;
-      width: 100%;
-      height: 400px;
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid rgba(0, 168, 255, 0.2);
-    }
-
-    #partition-canvas {
-      width: 100%;
-      height: 100%;
-      background-color: #f5f6fa;
     }
 
     .form-control, .form-select {
@@ -311,6 +275,9 @@
     }
   </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/partition-demo.css') }}">
+  <script defer src="{{ url_for('static', filename='js/partition-demo.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
 <!-- 左侧导航栏 -->
@@ -340,16 +307,10 @@
 </button>
 
 <!-- 主内容区域 -->
-<div class="main-content">
-  <div class="content-header">
-    <div class="content-title">
-      <i class="fas fa-play-circle me-2"></i>算法演示与映射仿真
-    </div>
-    <div class="content-actions d-flex gap-2">
-      <a class="btn btn-outline-primary btn-sm" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i>首页</a>
-      <a class="btn quantum-btn btn-sm" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
-    </div>
-  </div>
+<div class="main-content site-content">
+  {% with page_title='算法演示', page_description='分区算法分步演示与量子线路映射仿真', page_icon='demos' %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
   <!-- 算法演示部分 -->
   <section class="py-5">
@@ -358,40 +319,7 @@
 
       <div class="row mb-5">
         <div class="col-lg-6">
-          <div class="quantum-card p-4">
-            <h4 class="mb-4">分区算法演示 (27量子比特)</h4>
-            <div class="mb-4">
-              <label class="form-label">选择分区算法:</label>
-              <div class="d-flex gap-2">
-                <button class="btn quantum-btn flex-grow-1 active algo-btn" data-algo="gsp">GSP算法</button>
-                <button class="btn quantum-btn flex-grow-1 algo-btn" data-algo="qhsp">QHSP算法</button>
-                <button class="btn quantum-btn flex-grow-1 algo-btn" data-algo="dqp">DQP算法</button>
-              </div>
-            </div>
-            <div class="mb-4">
-              <label class="form-label">量子硬件拓扑:</label>
-              <select id="topology-select" class="form-select">
-                <option value="linear">线性拓扑</option>
-                <option value="grid">网格拓扑</option>
-                <option value="ibmq">IBMQ拓扑</option>
-                <option value="custom">自定义拓扑</option>
-              </select>
-            </div>
-            <!-- GIF容器 -->
-            <div class="gif-container mb-3">
-              <img id="partition-gif" src="/static/image/gsp_linear.gif" alt="27量子比特分区动画" style="width: 100%; height: 100%; object-fit: contain;">
-              <div class="gif-controls" style="position: absolute; bottom: 10px; left: 0; right: 0; text-align: center;">
-                <button id="play-pause-gif" class="btn btn-sm quantum-btn" style="padding: 5px 15px;">
-                  <i class="fas fa-pause"></i>
-                </button>
-              </div>
-            </div>
-            <div class="mt-3 d-flex justify-content-between">
-              <button id="algorithm-info" class="btn btn-outline-primary">
-                <i class="fas fa-info-circle"></i> 算法说明
-              </button>
-            </div>
-          </div>
+          {% include '_partition_demo.html' %}
         </div>
         <div class="col-lg-6">
           <!-- 映射转换 -->
@@ -629,16 +557,6 @@
     const modalElement = document.getElementById('algorithmModal');
     modalInstance = new bootstrap.Modal(modalElement);
 
-    // 算法选择按钮事件
-    document.querySelectorAll('.algo-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.algo-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        updateGifDisplay();
-        addToLog(`切换到 ${this.textContent} 算法`);
-      });
-    });
-
     // 算法说明按钮
     document.getElementById('algorithm-info').addEventListener('click', function() {
       const currentAlgo = document.querySelector('.algo-btn.active').dataset.algo;
@@ -647,25 +565,6 @@
       document.getElementById('algorithmModalContent').innerHTML = info.content;
       modalInstance.show();
       addToLog(`查看 ${info.title} 说明`);
-    });
-
-    // 拓扑选择变化
-    document.getElementById('topology-select').addEventListener('change', function() {
-      updateGifDisplay();
-      addToLog(`切换到 ${this.options[this.selectedIndex].text} 拓扑`);
-    });
-
-    // GIF播放/暂停
-    let isPaused = false;
-    document.getElementById('play-pause-gif').addEventListener('click', function() {
-      isPaused = !isPaused;
-      if (isPaused) {
-        this.innerHTML = '<i class="fas fa-play"></i>';
-        addToLog('暂停动画演示');
-      } else {
-        this.innerHTML = '<i class="fas fa-pause"></i>';
-        addToLog('继续动画演示');
-      }
     });
 
     // 门操作按钮
@@ -687,47 +586,7 @@
       });
     });
 
-    // 初始更新GIF
-    updateGifDisplay();
   });
-
-  // 更新GIF显示
-  function updateGifDisplay() {
-    const currentAlgo = document.querySelector('.algo-btn.active').dataset.algo;
-    const topology = document.getElementById('topology-select').value;
-    const gifImage = document.getElementById('partition-gif');
-    const imagePath = `/static/image/`;
-
-    // 文件名映射（包括DQP）
-    const gifMap = {
-      gsp: {
-        linear: "gsp_linear.gif",
-        grid: "gsp_grid.gif",
-        ibmq: "gsp_ibmq.gif",
-        custom: "gsp_custom.gif"
-      },
-      qhsp: {
-        linear: "qhsp_linear.gif",
-        grid: "qhsp_grid.gif",
-        ibmq: "qhsp_ibmq.gif",
-        custom: "qhsp_custom.gif"
-      },
-      dqp: {
-        linear: "dqp_linear.gif",
-        grid: "dqp_grid.gif",
-        ibmq: "dqp_ibmq.gif",
-        custom: "dqp_custom.gif"
-      }
-    };
-
-    let fileName = "gsp_linear.gif";
-    if (gifMap[currentAlgo] && gifMap[currentAlgo][topology]) {
-      fileName = gifMap[currentAlgo][topology];
-    }
-
-    gifImage.src = imagePath + fileName + '?t=' + Date.now();
-    console.log("Loading image:", gifImage.src);
-  }
 
   // 初始化映射可视化
   function initMappingVisualization() {

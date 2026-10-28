@@ -102,32 +102,8 @@
     }
 
     /* 内容头部 - 重新设计但保留原色 */
-    .content-header {
-      background: var(--quantum-card-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 168, 255, 0.15);
-      border-radius: 20px;
-      padding: 18px 28px;
-      margin-bottom: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-    }
 
-    .content-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--quantum-primary);
-      line-height: 1.2;
-    }
 
-    .content-subtitle {
-      margin-top: 4px;
-      font-size: 0.95rem;
-      color: var(--quantum-text-light);
-    }
 
     .btn-outline-primary {
       background: transparent;
@@ -514,6 +490,7 @@
   </style>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
 
@@ -542,17 +519,10 @@
   <i class="fas fa-bars"></i>
 </button>
 
-<div class="main-content">
-  <div class="content-header">
-    <div>
-      <div class="content-title">⚛️ 量子比特路由</div>
-      <div class="content-subtitle">并行分区 · 多路径可视化 · 串扰感知</div>
-    </div>
-    <div style="display: flex; gap: 12px;">
-      <a class="btn-outline-primary" href="#"><i class="fas fa-home"></i> 首页</a>
-      <a class="quantum-btn" href="#"><i class="fas fa-sign-out-alt"></i> 退出</a>
-    </div>
-  </div>
+<div class="main-content site-content site-content--padded">
+  {% with page_title='量子比特路由', page_description='并行分区 · 多路径可视化 · 串扰感知', page_icon='routing' %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
   <div class="container">
     <div class="main-layout" id="mainLayout">

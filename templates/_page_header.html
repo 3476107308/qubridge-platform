@@ -1,0 +1,39 @@
+{% macro header_icon(name) -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {% if name == 'home' %}
+  <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9"/>
+  {% elif name == 'framework' %}
+  <rect x="8" y="3" width="8" height="5" rx="1.5"/><rect x="2" y="16" width="7" height="5" rx="1.5"/><rect x="15" y="16" width="7" height="5" rx="1.5"/><path d="M12 8v4M5.5 16v-4h13v4"/>
+  {% elif name == 'demos' %}
+  <rect x="3" y="4" width="18" height="16" rx="4"/><path d="m10 8 6 4-6 4Z"/>
+  {% elif name == 'simulator' %}
+  <rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4M10 10h4v4h-4Z"/>
+  {% elif name == 'partition' %}
+  <path d="M12 3v18" stroke-dasharray="2 3"/><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M5 8v8M19 8v8M7 6h2m6 12h2"/>
+  {% elif name == 'routing' %}
+  <circle cx="5" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M5 7v8a4 4 0 0 0 4 4h8M10 5h5a4 4 0 0 1 4 4v4m-3-3 3 3 3-3"/>
+  {% elif name == 'news' %}
+  <rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 7h8M8 11h3v4H8Zm7 0h1m-1 4h1M8 18h8"/>
+  {% elif name == 'results' %}
+  <path d="M4 3v17h17M8 15v-4m5 4V7m5 8V4"/>
+  {% elif name == 'about' %}
+  <circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v.1"/>
+  {% elif name == 'logout' %}
+  <path d="M10 4H5v16h5m4-12 4 4-4 4M9 12h12"/>
+  {% endif %}
+</svg>
+{%- endmacro %}
+<header class="page-header" aria-labelledby="page-heading">
+  <div class="page-header-main">
+    <span class="page-header-icon">{{ header_icon(page_icon) }}</span>
+    <div class="page-header-copy">
+      <div class="page-header-eyebrow"><span>QUBRIDGE</span><span class="page-header-divider" aria-hidden="true"></span><span>量子计算平台</span></div>
+      <h1 id="page-heading" class="page-header-title">{{ page_title }}</h1>
+      <p class="page-header-description">{{ page_description }}{% if show_algorithm | default(false) %}<span class="page-header-algorithm">当前算法：<span id="headerAlgoName">标准分区算法</span></span>{% endif %}</p>
+    </div>
+  </div>
+  <nav class="page-header-actions" aria-label="页面快捷操作">
+    <a class="page-header-button" href="{{ url_for('home') }}">{{ header_icon('home') }}<span>首页</span></a>
+    <a class="page-header-button page-header-button-subtle" href="{{ url_for('logout') }}">{{ header_icon('logout') }}<span>退出登录</span></a>
+  </nav>
+</header>

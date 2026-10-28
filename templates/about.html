@@ -308,33 +308,6 @@
 /* ===== Global UI polish (shared) ===== */
 body { overflow-x: hidden; }
 .main-content { padding-bottom: 40px; }
-.content-header {
-  margin: 20px 24px 18px;
-  padding: 16px 18px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 168, 255, 0.12);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: space-between;
-}
-@media (max-width: 768px) {
-  .content-header { margin: 78px 14px 16px; flex-direction: column; align-items: flex-start; }
-}
-.content-title {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--quantum-primary);
-  line-height: 1.2;
-}
-.content-subtitle {
-  margin-top: 4px;
-  font-size: 0.9rem;
-  color: var(--quantum-text-light);
-}
 .content-actions .btn { border-radius: 999px; padding: 8px 14px; font-weight: 600; }
 .btn-outline-primary { border-color: var(--quantum-accent); color: var(--quantum-accent); }
 .btn-outline-primary:hover { background: rgba(0, 168, 255, 0.08); color: var(--quantum-accent); }
@@ -403,6 +376,7 @@ body { overflow-x: hidden; }
 }
 </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
 <!-- 左侧导航栏 -->
@@ -433,18 +407,11 @@ body { overflow-x: hidden; }
 </button>
 
 <!-- 主内容区域 -->
-<div class="main-content">
+<div class="main-content site-content">
 
-<div class="content-header">
-  <div>
-    <div class="content-title">关于项目</div>
-    <div class="content-subtitle">论文背景、团队与联系方式</div>
-  </div>
-  <div class="content-actions d-flex gap-2">
-    <a class="btn btn-outline-primary btn-sm" href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i>首页</a>
-    <a class="btn quantum-btn btn-sm" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>退出</a>
-  </div>
-</div>
+{% with page_title='关于项目', page_description='论文背景、团队与联系方式', page_icon='about' %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
 <!-- 关于页面 -->
     <section class="py-5" style="background: rgba(245, 246, 250, 0.9);">

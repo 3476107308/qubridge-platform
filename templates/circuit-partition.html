@@ -97,18 +97,7 @@
 
     .main-content { margin-left: 250px; min-height: 100vh; padding: 20px 30px; }
 
-    .content-header {
-      background: var(--quantum-card-bg);
-      border: 1px solid rgba(0, 168, 255, 0.15);
-      border-radius: 20px;
-      padding: 18px 28px;
-      margin-bottom: 24px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-    }
 
-    .content-title { font-size: 1.5rem; font-weight: 700; color: var(--quantum-primary); }
-    .content-subtitle { margin-top: 4px; font-size: 0.95rem; color: var(--quantum-text-light); }
 
     .layout {
       display: grid;
@@ -218,6 +207,7 @@
   </style>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
 </head>
 <body>
 
@@ -240,13 +230,10 @@
   {% include '_sidebar_footer.html' %}
 </div>
 
-<div class="main-content">
-  <div class="content-header">
-    <div>
-      <div class="content-title">⚛️ 线路逻辑比特分区与拓扑映射</div>
-      <div class="content-subtitle">多起点贪心分区 · 隐形传态代价 · 分区到芯片映射</div>
-    </div>
-  </div>
+<div class="main-content site-content site-content--padded">
+  {% with page_title='线路分区与拓扑映射', page_description='多起点贪心分区 · 隐形传态代价 · 分区到芯片映射', page_icon='partition' %}
+  {% include '_page_header.html' %}
+  {% endwith %}
 
   <div class="layout">
     <!-- 左侧控制 -->
