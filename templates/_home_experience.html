@@ -1,0 +1,38 @@
+{% from '_page_header.html' import header_icon %}
+<div class="home-experience" id="home-experience">
+  <div class="home-progress" aria-hidden="true"><span></span></div>
+  <section class="home-hero" aria-labelledby="hero-title">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-topline"><span><b class="status-dot"></b> QUANTUM MULTI-PROGRAMMING</span><button type="button" class="motion-toggle" id="motion-toggle" aria-pressed="false"><span class="motion-bars" aria-hidden="true"></span><span id="motion-label">暂停动效</span></button></div>
+    <div class="hero-content">
+      <div class="hero-copy home-reveal"><p class="home-overline">从单一线路，到协同计算</p><h2 id="hero-title"><span class="hero-wordmark">QuBridge<span class="wordmark-dot">.</span></span>让量子资源<br><span class="gradient-text">协同释放潜能。</span></h2><p class="hero-intro">把多个量子程序带到同一片计算空间。<br>以分区、映射与路由，探索有限量子资源的更多可能。</p><div class="home-actions"><a class="home-button home-button-primary" href="{{ url_for('simulator') }}">进入量子模拟器 <span aria-hidden="true">↗</span></a><a class="home-button home-button-text" href="#algorithm-section">探索算法优势 <span aria-hidden="true">↓</span></a></div></div>
+      <div class="quantum-stage home-reveal" aria-label="三个量子程序在芯片拓扑中分区协同的概念动画"><div class="stage-corner stage-corner-top" aria-hidden="true"></div><div class="stage-corner stage-corner-bottom" aria-hidden="true"></div><div class="stage-caption"><span>QPU / TOPOLOGY FIELD</span><span class="stage-caption-light">概念可视化</span></div><canvas id="quantum-canvas" aria-hidden="true"></canvas><div class="stage-bottom"><span><i class="legend-dot legend-cyan"></i> PROGRAM A</span><span><i class="legend-dot legend-violet"></i> PROGRAM B</span><span><i class="legend-dot legend-mint"></i> PROGRAM C</span></div><div class="stage-hint">分区协同 <span></span> 拓扑映射 <span></span> 路径连接</div></div>
+    </div>
+    <div class="hero-foot"><a class="scroll-cue" href="#algorithm-section"><span class="scroll-line" aria-hidden="true"></span>向下探索 <small>SCROLL TO EXPLORE</small></a><span class="hero-foot-note">为 NISQ 时代的量子计算而探索</span></div>
+  </section>
+  <section class="home-algorithms home-section" id="algorithm-section" aria-labelledby="algorithms-title">
+    <div class="section-heading home-reveal"><div><p class="home-overline"><span>01 /</span> ALGORITHM INTELLIGENCE</p><h2 id="algorithms-title">更好的分区，<br><span class="text-muted-home">从理解线路与硬件开始。</span></h2></div><p>三种策略，关注不同的优化方向。<br>在通信开销、硬件约束与动态调整之间寻找平衡。</p></div>
+    <div class="algorithm-lab home-reveal">
+      <div class="algorithm-tabs" role="tablist" aria-label="探索分区算法">
+        {% for key, name, description, icon in [('gsp', 'GSP', '图结构分区', 'partition'), ('qhsp', 'QHSP', '硬件感知', 'simulator'), ('dqp', 'DQP', '动态分区', 'routing')] %}
+        <button type="button" id="tab-{{ key }}" class="algorithm-tab" role="tab" aria-selected="{{ 'true' if loop.first else 'false' }}" aria-controls="algorithm-detail" data-strategy="{{ key }}" tabindex="{{ '0' if loop.first else '-1' }}"><span class="tab-number">0{{ loop.index }}</span><span>{{ name }}<small>{{ description }}</small></span>{{ header_icon(icon) }}</button>
+        {% endfor %}
+      </div>
+      <div class="algorithm-detail" id="algorithm-detail" role="tabpanel" aria-labelledby="tab-gsp" tabindex="0" data-strategy="gsp">
+        <div class="algorithm-copy"><span class="algorithm-kicker" id="algorithm-kicker">STRUCTURE FIRST</span><h3 id="algorithm-title">把紧密相连的计算，<br>放在一起。</h3><p id="algorithm-description">从量子比特之间的交互关系出发，将线路划分为相互协作的子区域，让分区边界尽量避开频繁交互。</p><ul class="algorithm-benefits" id="algorithm-benefits"><li>以减少跨分区通信为优化目标</li><li>兼顾分区规模与资源分配</li><li>图结构直观，便于分析与对照</li></ul><a class="home-inline-link" href="{{ url_for('demos') }}">在演示中逐步观察 <span aria-hidden="true">↗</span></a></div>
+        <div class="algorithm-visual"><div class="mini-visual-label"><span id="algorithm-visual-label">INTERACTION GRAPH</span><span>策略示意</span></div><svg id="algorithm-graph" viewBox="0 0 440 285" role="img" aria-label="量子比特图分区策略示意"></svg><div class="visual-principle"><span class="principle-line"></span><span id="algorithm-principle">减少跨区连接，保留区内协作</span></div></div>
+      </div>
+    </div>
+    <div class="algorithm-bottom home-reveal"><span>算法表现随线路、拓扑及误差模型而变化。</span><a href="{{ url_for('results') }}">查看实验分析 ↗</a></div>
+  </section>
+  <section class="home-workflow home-section" id="workflow-section" aria-labelledby="workflow-title">
+    <div class="section-heading home-reveal"><div><p class="home-overline"><span>02 /</span> FROM CIRCUIT TO INSIGHT</p><h2 id="workflow-title">让计算的每一步，<br><span class="text-muted-home">都清晰可见。</span></h2></div><a class="home-inline-link" href="{{ url_for('framework') }}">了解 QuBridge 架构 <span aria-hidden="true">↗</span></a></div>
+    <div class="workflow-track home-reveal">
+      {% for number, icon, title, description in [('01', 'demos', '输入量子线路', '从 QASM 文件出发，解析量子门与比特交互。'), ('02', 'partition', '划分计算区域', '根据交互关系与硬件约束，探索分区方案。'), ('03', 'routing', '映射与路由', '将逻辑比特映射到物理拓扑，观察路径变化。'), ('04', 'results', '比较与分析', '结合线路深度与成功概率估计，分析方案表现。')] %}
+      <article class="workflow-step"><div class="workflow-icon">{{ header_icon(icon) }}<span>{{ number }}</span></div><h3>{{ title }}</h3><p>{{ description }}</p></article>
+      {% endfor %}
+    </div>
+    <div class="home-launch home-reveal"><div><span class="home-overline">YOUR NEXT EXPERIMENT</span><h3>从一条线路，开始探索。</h3><p>上传线路，选择策略，让抽象的量子计算变得可观察。</p></div><a class="home-button home-button-primary" href="{{ url_for('simulator') }}">开始我的实验 <span aria-hidden="true">↗</span></a><div class="launch-orbit" aria-hidden="true"></div></div>
+  </section>
+  <footer class="home-footer"><a href="{{ url_for('home') }}">QuBridge<span>.</span></a><span>量子多程序映射与动态路由可视化平台</span><a href="{{ url_for('about') }}">关于项目 ↗</a></footer>
+</div>
