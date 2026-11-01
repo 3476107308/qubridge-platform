@@ -72,6 +72,7 @@ except ImportError as e:
     print(f"✗ 线路分区与拓扑映射模块加载失败: {e}")
 
 app = Flask(__name__)
+app.config.from_pyfile('ui_config.py')
 app.secret_key = 'quantum-parallel-visualization'
 
 # 数据库配置

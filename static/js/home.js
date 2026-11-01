@@ -115,11 +115,5 @@
   function updateScroll(){scrollPending=false;const max=document.documentElement.scrollHeight-innerHeight;root.style.setProperty('--page-progress',String(max>0?Math.min(1,scrollY/max):0));}
   window.addEventListener('scroll',()=>{if(!scrollPending){scrollPending=true;requestAnimationFrame(updateScroll);}},{passive:true});updateScroll();
   root.querySelectorAll('a[href^="#"]').forEach(link=>link.addEventListener('click',event=>{const target=document.querySelector(link.getAttribute('href'));if(target){event.preventDefault();target.scrollIntoView({behavior:paused||reduced.matches?'instant':'smooth',block:'start'});}}));
-  const menu=document.getElementById('mobileMenuToggle');const sidebar=document.querySelector('.sidebar-nav');
-  function closeMenu(){sidebar.classList.remove('open');menu.setAttribute('aria-expanded','false');}
-  menu.addEventListener('click',()=>{const open=sidebar.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));});
-  document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu();});
-  document.addEventListener('click',event=>{if(innerWidth<=768&&!sidebar.contains(event.target)&&!menu.contains(event.target))closeMenu();});
-  window.addEventListener('resize',()=>{if(innerWidth>768)closeMenu();});
   syncMotion();
 })();

@@ -489,35 +489,16 @@
     }
   </style>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
+  <script src="{{ url_for('static', filename='js/shell-state.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/shell.css') }}">
+  <script src="{{ url_for('static', filename='js/shell.js') }}" defer></script>
 </head>
-<body>
+<body class="qubridge-shell">
 
 <!-- 左侧导航 (原样) -->
-<div class="sidebar-nav">
-    <div class="sidebar-brand">
-        <i class="fas fa-atom me-2"></i>
-        <span>QuBridge 导航</span>
-    </div>
-    <ul class="sidebar-menu">
-        <li><a href="{{ url_for('home') }}" class="sidebar-link{% if request.endpoint == 'home' %} active{% endif %}"{% if request.endpoint == 'home' %} aria-current="page"{% endif %}><i class="fas fa-home"></i>首页</a></li>
-        <li><a href="{{ url_for('framework') }}" class="sidebar-link{% if request.endpoint == 'framework' %} active{% endif %}"{% if request.endpoint == 'framework' %} aria-current="page"{% endif %}><i class="fas fa-sitemap"></i>QuBridge框架</a></li>
-        <li><a href="{{ url_for('demos') }}" class="sidebar-link{% if request.endpoint == 'demos' %} active{% endif %}"{% if request.endpoint == 'demos' %} aria-current="page"{% endif %}><i class="fas fa-play-circle"></i>算法演示</a></li>
-        <li><a href="{{ url_for('results') }}" class="sidebar-link{% if request.endpoint == 'results' %} active{% endif %}"{% if request.endpoint == 'results' %} aria-current="page"{% endif %}><i class="fas fa-chart-bar"></i>实验结果</a></li>
-        <li><a href="{{ url_for('simulator') }}" class="sidebar-link{% if request.endpoint == 'simulator' %} active{% endif %}"{% if request.endpoint == 'simulator' %} aria-current="page"{% endif %}><i class="fas fa-microchip"></i>量子模拟器</a></li>
-        <li><a href="{{ url_for('qubit_routing') }}" class="sidebar-link{% if request.endpoint == 'qubit_routing' %} active{% endif %}"{% if request.endpoint == 'qubit_routing' %} aria-current="page"{% endif %}><i class="fas fa-route"></i>量子比特路由</a></li>
-        <li><a href="{{ url_for('circuit_partition') }}" class="sidebar-link{% if request.endpoint == 'circuit_partition' %} active{% endif %}"{% if request.endpoint == 'circuit_partition' %} aria-current="page"{% endif %}><i class="fas fa-project-diagram"></i>线路分区映射</a></li>
-        <li><a href="{{ url_for('News') }}" class="sidebar-link{% if request.endpoint == 'News' %} active{% endif %}"{% if request.endpoint == 'News' %} aria-current="page"{% endif %}><i class="fas fa-newspaper"></i>最新动态</a></li>
-        <li><a href="{{ url_for('about') }}" class="sidebar-link{% if request.endpoint == 'about' %} active{% endif %}"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}><i class="fas fa-info-circle"></i>关于项目</a></li>
-    </ul>
+{% include '_site_navigation.html' %}
 
-{% include '_sidebar_footer.html' %}
-</div>
-
-<button class="mobile-menu-toggle" id="mobileMenuToggle">
-  <i class="fas fa-bars"></i>
-</button>
 
 <div class="main-content site-content site-content--padded">
   {% with page_title='量子比特路由', page_description='并行分区 · 多路径可视化 · 串扰感知', page_icon='routing' %}
@@ -811,11 +792,6 @@
     document.getElementById('generateMultiTaskBtn')?.addEventListener('click',generateMultiTask);
     document.getElementById('ibm156Selector')?.addEventListener('click',()=>selectQPU('ibm_156'));
     document.getElementById('ibm27Selector')?.addEventListener('click',()=>selectQPU('ibm_27'));
-
-    // 移动菜单
-    document.getElementById('mobileMenuToggle')?.addEventListener('click',function(){
-      document.querySelector('.sidebar-nav').classList.toggle('open');
-    });
 
     // 文件上传模拟
     document.getElementById('qsamFileInput')?.addEventListener('change',function(e){

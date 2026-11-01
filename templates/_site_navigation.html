@@ -1,0 +1,48 @@
+{% from '_page_header.html' import header_icon %}
+{% set groups = [
+  ('overview', '平台概览', [('home', '首页', 'home'), ('framework', 'QuBridge 框架', 'framework')]),
+  ('compute', '量子计算', [('simulator', '量子模拟器', 'simulator'), ('circuit_partition', '线路分区映射', 'partition'), ('qubit_routing', '量子比特路由', 'routing')]),
+  ('analysis', '演示与分析', [('demos', '算法演示', 'demos'), ('results', '实验结果', 'results')]),
+  ('project', '项目资讯', [('News', '最新动态', 'news'), ('about', '关于项目', 'about')])
+] %}
+<aside class="site-sidebar" id="site-sidebar" aria-label="主导航" data-navigation-motion="{{ 1 if config.get('NAVIGATION_ANIMATIONS', 1) == 1 else 0 }}">
+  <div class="nav-brand-row">
+    <a class="nav-brand" href="{{ url_for('home') }}" aria-label="QuBridge 首页"><span class="nav-brand-mark">{{ header_icon('brand') }}</span><span class="nav-brand-copy">QuBridge<span>QUANTUM WORKSPACE</span></span></a>
+    <button class="nav-icon-button nav-mobile-close" type="button" aria-label="关闭导航">{{ header_icon('close') }}</button>
+  </div>
+  <div class="nav-workspace-label"><span></span>量子计算工作空间</div>
+  <nav class="nav-scroll" aria-label="栏目导航">
+    {% for key, title, items in groups %}
+    <section class="nav-group" data-group="{{ key }}">
+      <button class="nav-group-toggle" type="button" aria-expanded="true" aria-controls="nav-group-{{ key }}"><span>{{ title }}</span>{{ header_icon('chevron') }}</button>
+      <div class="nav-group-panel">
+      <ul class="nav-group-items" id="nav-group-{{ key }}">
+        {% for endpoint, label, icon in items %}
+        <li class="nav-item{% if endpoint == 'simulator' %} nav-item-simulator{% endif %}">
+          <a href="{{ url_for(endpoint) }}" class="nav-link-item{% if request.endpoint == endpoint %} is-active{% endif %}" data-label="{{ label }}" aria-label="{{ label }}"{% if request.endpoint == endpoint %} aria-current="page"{% endif %}>{{ header_icon(icon) }}<span class="nav-link-label">{{ label }}</span>{% if request.endpoint == endpoint %}<span class="nav-active-dot" aria-hidden="true"></span>{% endif %}</a>
+          {% if endpoint == 'simulator' %}<button type="button" class="nav-algorithm-toggle" aria-label="展开算法选项" aria-controls="nav-algorithms" aria-expanded="{{ 'true' if request.endpoint == 'simulator' else 'false' }}">{{ header_icon('chevron') }}</button>{% endif %}
+          {% if endpoint == 'simulator' %}
+          <div class="nav-algorithms{% if request.endpoint != 'simulator' %} is-closed{% endif %}" id="nav-algorithms"{% if request.endpoint != 'simulator' %} inert{% endif %}>
+            <div class="nav-algorithms-inner">
+            <span class="nav-flyout-heading">量子模拟器</span>
+            {% for value, name, symbol in [('standard', '标准算法', 'simulator'), ('adaptive', '自适应算法', 'adaptive'), ('compare', '算法对比', 'compare')] %}
+            <a class="nav-algorithm{% if request.endpoint == 'simulator' %} submenu-item{% endif %}" href="{{ url_for('simulator') }}?algorithm={{ value }}" data-algo="{{ value }}">{{ header_icon(symbol) }}<span>{{ name }}</span></a>
+            {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      </div>
+    </section>
+    {% endfor %}
+  </nav>
+  <div class="nav-footer">
+    <button type="button" class="nav-collapse-button" aria-label="折叠导航" aria-expanded="true" aria-controls="site-sidebar" data-label="折叠导航">{{ header_icon('collapse') }}<span class="nav-link-label">收起导航</span><span class="nav-collapse-hint" aria-hidden="true">‹</span></button>
+    <div class="nav-account" data-label="{{ current_user.username if current_user.is_authenticated else '未登录' }}"><span class="nav-avatar">{{ header_icon('user') }}<i aria-hidden="true"></i></span><span class="nav-account-copy"><strong>{{ current_user.username if current_user.is_authenticated else '未登录' }}</strong><small>当前登录用户</small></span><a class="nav-logout nav-icon-button" href="{{ url_for('logout') }}" aria-label="退出登录" data-label="退出登录">{{ header_icon('logout') }}</a></div>
+  </div>
+</aside>
+<button type="button" class="site-nav-backdrop" aria-label="关闭导航" hidden></button>
+<button type="button" class="site-mobile-toggle" aria-controls="site-sidebar" aria-expanded="false" aria-label="展开导航">{{ header_icon('menu') }}<span>QuBridge</span></button>
+<div class="nav-tooltip" id="nav-tooltip" role="tooltip" hidden></div>
