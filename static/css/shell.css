@@ -61,6 +61,19 @@ body.qubridge-shell {
 .nav-algorithm-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
 .nav-algorithms { margin: 7px 0 10px 23px; padding: 0 0 0 12px; border-left: 1px solid #354a64; }
 .nav-algorithms.is-closed { margin-block: 0; }
+/* Saved state is available in the head, before the deferred interaction script.
+   Match its final layout immediately so cross-page navigation cannot flash shut. */
+html.nav-booting[data-nav-overview='closed'] [data-group='overview'] .nav-group-panel,
+html.nav-booting[data-nav-compute='closed'] [data-group='compute'] .nav-group-panel,
+html.nav-booting[data-nav-analysis='closed'] [data-group='analysis'] .nav-group-panel,
+html.nav-booting[data-nav-project='closed'] [data-group='project'] .nav-group-panel,
+html.nav-booting[data-nav-algorithms='closed'] #nav-algorithms { grid-template-rows: 0fr; opacity: 0; visibility: hidden; }
+html.nav-booting[data-nav-algorithms='closed'] #nav-algorithms { margin-block: 0; }
+html.nav-booting[data-nav-algorithms='open'] #nav-algorithms { grid-template-rows: 1fr; opacity: 1; visibility: visible; margin-block: 7px 10px; }
+@media (min-width: 769px) {
+  html.nav-booting.nav-is-collapsed .nav-group .nav-group-panel { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+  html.nav-booting.nav-is-collapsed #nav-algorithms { grid-template-rows: 0fr; opacity: 0; visibility: hidden; margin-block: 0; }
+}
 .nav-algorithms-inner { min-height: 0; overflow: hidden; }
 .site-sidebar .nav-algorithm { display: flex; align-items: center; gap: 10px; padding: 9px 10px; margin: 2px 0; min-height: 36px; color: #90a5bf; border: 0; border-radius: 6px; font-size: 12px; line-height: 18px; background: transparent; text-decoration: none; }
 .nav-algorithm svg { width: 16px; height: 16px; flex-basis: 16px; }
@@ -124,12 +137,6 @@ body.qubridge-shell {
 .qubridge-shell footer:not(.home-footer) { background: #0b1220; color: #95a6bf; border-top: 1px solid #25334a; }
 .qubridge-shell :is(.modal-header,.modal-footer) { border-color: #2c3c54; }
 .qubridge-shell .btn-close { filter: invert(1) grayscale(1); }
-.qubridge-shell .framework-toolbar { background: #121d30; border-color: #2b3950; }
-.qubridge-shell :is(.framework-toolbar-title,.framework-zoom-level,.framework-hint) { color: #9eb3cf; }
-.qubridge-shell .framework-toolbar button { background: #1a2940; border-color: #354865; color: #c4d7ec; }
-.qubridge-shell #framework-visualization { background: #0c1424; }
-.qubridge-shell .framework-node .node-label { fill: #d6e4f5; stroke: #0c1424; }
-.qubridge-shell .framework-hint { background: #101827; border-color: #2b3950; }
 .qubridge-shell .home-experience { border: 1px solid #8ca8d51b; }
 .qubridge-shell #density-result { background: #162b3c !important; color: #c4d7eb; }
 .qubridge-shell :is(.current-algo-indicator,.algo-desc-modal,.reset-btn,.circuit-preview,.qpu-selector,.task-item,.logical-to-physical,.gate-execution) { background: #152034; color: #c4d3e8; }

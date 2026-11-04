@@ -1,0 +1,20 @@
+/* Native same-origin document transitions preserve ordinary links and history.
+   Opt-in is emitted by _shell_assets.html only when PAGE_TRANSITIONS is 1. */
+html[data-page-motion='1'] .site-sidebar { view-transition-name: site-navigation; }
+html[data-page-motion='1'] .site-mobile-toggle { view-transition-name: mobile-navigation; }
+::view-transition { pointer-events: none; }
+::view-transition-group(root) { animation: none; }
+::view-transition-old(root) { animation: qubridge-page-out .18s ease-out both; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: qubridge-page-in .34s cubic-bezier(.22,.68,.2,1) both; mix-blend-mode: normal; }
+/* The persistent navigation is shown in place, without fading or resizing. */
+::view-transition-group(site-navigation), ::view-transition-group(mobile-navigation),
+::view-transition-new(site-navigation), ::view-transition-new(mobile-navigation) { animation: none; }
+::view-transition-old(site-navigation), ::view-transition-old(mobile-navigation) { display: none; }
+@keyframes qubridge-page-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes qubridge-page-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-page-motion='1'].page-enter-fallback .main-content { animation: qubridge-page-in .34s cubic-bezier(.22,.68,.2,1) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

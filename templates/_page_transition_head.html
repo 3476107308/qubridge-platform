@@ -1,0 +1,7 @@
+{% if config.get('PAGE_TRANSITIONS', 1) == 1 %}
+{# Declare opt-in before any blocking page resources; wait only for the heading. #}
+<style media="(prefers-reduced-motion: no-preference)">
+  @view-transition { navigation: auto; }
+</style>
+<link rel="expect" blocking="render" href="#page-heading">
+{% endif %}

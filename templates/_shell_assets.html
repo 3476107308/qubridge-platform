@@ -1,0 +1,10 @@
+{# Shared head assets: restore navigation before paint and opt in per server config. #}
+{% set nav_groups = {'home': 'overview', 'framework': 'overview', 'simulator': 'compute', 'circuit_partition': 'compute', 'qubit_routing': 'compute', 'demos': 'analysis', 'results': 'analysis', 'News': 'project', 'about': 'project'} %}
+<script src="{{ url_for('static', filename='js/shell-state.js') }}"
+        data-active-group="{{ nav_groups.get(request.endpoint, '') }}"
+        data-simulator="{{ 1 if request.endpoint == 'simulator' else 0 }}"
+        data-page-motion="{{ 1 if config.get('PAGE_TRANSITIONS', 1) == 1 else 0 }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/shell.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/page-transitions.css') }}">
+<script src="{{ url_for('static', filename='js/shell.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/page-transitions.js') }}" defer></script>

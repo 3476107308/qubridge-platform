@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  {% include '_page_transition_head.html' %}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>线路分区与拓扑映射 · QuBridge</title>
@@ -207,9 +208,7 @@
   </style>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
-  <script src="{{ url_for('static', filename='js/shell-state.js') }}"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/shell.css') }}">
-  <script src="{{ url_for('static', filename='js/shell.js') }}" defer></script>
+  {% include '_shell_assets.html' %}
 </head>
 <body class="qubridge-shell">
 

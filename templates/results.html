@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  {% include '_page_transition_head.html' %}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>实验结果 - 多量子线路映射仿真平台</title>
@@ -293,9 +294,7 @@ body { overflow-x: hidden; }
 .sidebar-footer .quantum-btn { width: 100%; padding: 10px 14px; }
 </style>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/page-header.css') }}">
-  <script src="{{ url_for('static', filename='js/shell-state.js') }}"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/shell.css') }}">
-  <script src="{{ url_for('static', filename='js/shell.js') }}" defer></script>
+  {% include '_shell_assets.html' %}
 </head>
 <body class="qubridge-shell">
 <!-- 左侧导航栏 -->

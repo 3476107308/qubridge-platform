@@ -13,12 +13,28 @@
   const algoToggle = sidebar.querySelector('.nav-algorithm-toggle');
   const algorithms = document.getElementById('nav-algorithms');
   const logout = sidebar.querySelector('.nav-logout');
+  const navScroll = sidebar.querySelector('.nav-scroll');
   root.dataset.navigationMotion = sidebar.dataset.navigationMotion;
   let flyoutOpen = false, leaveTimer, suppressFocusOpen = false;
   const save = (key, value) => { try { localStorage.setItem(key, value); } catch (_) {} };
   const read = key => { try { return localStorage.getItem(key); } catch (_) { return null; } };
   const compact = () => !mobile.matches && root.classList.contains('nav-is-collapsed');
   const hideTip = () => { tip.hidden = true; };
+  const algorithmKey = 'qubridge.nav.algorithms.expanded';
+
+  function saveScroll() {
+    try { sessionStorage.setItem('qubridge.nav.scroll', String(navScroll.scrollTop)); } catch (_) {}
+  }
+  function restoreScroll() {
+    try { navScroll.scrollTop = Number(sessionStorage.getItem('qubridge.nav.scroll')) || 0; } catch (_) {}
+  }
+
+  function setAlgorithmsOpen(open) {
+    algoToggle.setAttribute('aria-expanded', String(open));
+    algoToggle.setAttribute('aria-label', open ? '收起算法选项' : '展开算法选项');
+    save(algorithmKey, String(open));
+    setPanel(algorithms, open && !compact());
+  }
 
   function showTip(target) {
     if (!compact() || flyoutOpen) return;
@@ -86,6 +102,7 @@
     // Always reveal the destination's group, even if it was closed on another page.
     const isOpen = group.querySelector('[aria-current="page"]') || read(key) !== 'false';
     button.setAttribute('aria-expanded', String(Boolean(isOpen)));
+    if (group.querySelector('[aria-current="page"]')) save(key, 'true');
     button.addEventListener('click', () => {
       const open = button.getAttribute('aria-expanded') !== 'true';
       button.setAttribute('aria-expanded', String(open));
@@ -101,8 +118,9 @@
   algoToggle.addEventListener('click', () => {
     if (compact()) { if (flyoutOpen) closeFlyout(); else openFlyout(); return; }
     const open = algoToggle.getAttribute('aria-expanded') !== 'true';
-    algoToggle.setAttribute('aria-expanded', String(open)); setPanel(algorithms, open);
+    setAlgorithmsOpen(open);
   });
+  simulator.querySelector('.nav-link-item').addEventListener('click', () => setAlgorithmsOpen(true));
   simulator.addEventListener('pointerenter', openFlyout);
   simulator.addEventListener('pointerleave', () => { leaveTimer = setTimeout(closeFlyout, 160); });
   algorithms.addEventListener('pointerenter', () => clearTimeout(leaveTimer));
@@ -111,6 +129,7 @@
   simulator.addEventListener('focusout', event => { if (!simulator.contains(event.relatedTarget)) closeFlyout(); });
   algorithms.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
     save('selectedAlgorithm', link.dataset.algo);
+    setAlgorithmsOpen(true);
     if (mobile.matches) setMobile(false, true);
     closeFlyout();
   }));
@@ -132,10 +151,29 @@
     }
   });
   document.addEventListener('pointerdown', event => { if (!simulator.contains(event.target)) closeFlyout(); });
-  sidebar.querySelector('.nav-scroll').addEventListener('scroll', () => { hideTip(); closeFlyout(); }, {passive: true});
+  navScroll.addEventListener('scroll', () => { saveScroll(); hideTip(); closeFlyout(); }, {passive: true});
+  window.addEventListener('pageswap', saveScroll);
+  window.addEventListener('pagehide', saveScroll);
   window.addEventListener('resize', () => { hideTip(); closeFlyout(); });
   mobile.addEventListener('change', () => { setMobile(false); syncWidth(); });
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) return;
+    root.classList.remove('nav-motion-ready');
+    root.classList.toggle('nav-is-collapsed', read('qubridge.nav.collapsed') === 'true');
+    setAlgorithmsOpen(read(algorithmKey) === 'true');
+    sidebar.querySelectorAll('.nav-group').forEach(group => {
+      const key = `qubridge.nav.group.${group.dataset.group}`;
+      const open = Boolean(group.querySelector('[aria-current="page"]')) || read(key) !== 'false';
+      group.querySelector('.nav-group-toggle').setAttribute('aria-expanded', String(open));
+      if (open) save(key, 'true');
+    });
+    syncWidth(); setMobile(false); restoreScroll();
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('nav-motion-ready')));
+  });
+  setAlgorithmsOpen(root.dataset.navAlgorithms === 'open');
   syncWidth(); setMobile(false);
+  root.classList.remove('nav-booting');
+  restoreScroll();
   // Restore saved layout without an entrance animation, then enable transitions.
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('nav-motion-ready')));
 })();
