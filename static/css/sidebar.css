@@ -40,6 +40,9 @@
 .sidebar-nav .sidebar-user i {
   flex: 0 0 18px;
   width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
   color: var(--quantum-accent, #00a8ff);
 }
 

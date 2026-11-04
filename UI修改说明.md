@@ -33,11 +33,12 @@
 - 检查了桌面和手机页面截图，以及新增和修改脚本的语法。框架页交互测试未出现 JavaScript 异常。
 - 本次未运行量子算法或验证其计算结果。
 
-## 发现但未修改的原有问题
+## 接力修复（2026-10-27）
 
-1. **量子比特路由页顶部“首页／退出”无实际跳转**：`templates/qubit-routing.html` 中这两个链接仍为 `href="#"`。左侧导航的对应功能不受影响。
-2. **量子比特路由仍是前端模拟逻辑**：上传文件后没有解析文件内容，而是生成随机线路；分配得分随机生成，保真度阈值虽被读取，但没有用于分配筛选。位置：同文件中的 `submitNewTask`、`executeQuBridgeRouting` 和文件上传事件。
-3. **实验结果页已有脚本异常与失效跳转**：`templates/results.html` 绑定不存在的 `simulatorBtn` 元素，浏览器报 `Cannot read properties of null (reading 'addEventListener')`；该回调中的 `simulator.html` 地址也返回 404，实际应用路由为 `/simulator`。
-4. **项目自带虚拟环境不能在当前机器直接使用**：`.venv/pyvenv.cfg` 指向另一用户目录下的 Python 3.10；直接运行 `.venv/Scripts/python.exe --version` 提示找不到该 Python。本次 UI 验证采用临时环境，没有调整原虚拟环境或项目依赖。
+1. 路由页顶部“首页／退出”已指向实际 Flask 路由。
+2. 上传 `.qasm` 后由服务端 Qiskit 解析真实线路。分配依据拓扑连线和固定误差模型估算保真度，按阈值决定是否分配；示例随机线路单独标明，拓扑路径依线路的多比特门绘制。页面显示的是模型估计，不代表真实量子设备测量结果。
+3. 删除实验结果页对不存在按钮的事件绑定，模拟器入口使用现有导航路由。
+4. 新增可在本机重建的 `.web-venv` 和 `setup-web.ps1`，不依赖从其他电脑复制过来的 `.venv`；Windows 控制台启动时的字符编码异常也已修复。
+5. 共享账号区固定头像图标字号，切换到“算法演示”不会放大。
 
-原页面模板备份位于：`C:\Users\Administrator\AppData\Local\Temp\qubridge-ui-before-20261027\templates`。
+使用隔离内存数据库完成了 QASM 接口测试，并在 Chrome 中验证上传、阈值筛选、路径绘制、顶部链接及头像尺寸。运行方式见 `README.md`。

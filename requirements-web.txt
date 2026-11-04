@@ -1,0 +1,11 @@
+# Dependencies used by app.py and its quantum analysis modules on Windows.
+# The legacy requirements.txt also lists MindSpore/MindQuantum, which this app does not import.
+Flask==2.3.3
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.1.1
+matplotlib==3.10.7
+networkx==3.4.2
+numpy==1.26.4
+qiskit==2.2.2
+qiskit-aer==0.17.0
+qiskit-ibm-runtime==0.40.1

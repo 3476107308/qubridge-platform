@@ -812,6 +812,3 @@ def evaluate_global_gates_all_partitions(partitions, gates):
             total_global_gates += 1
 
     return total_global_gates
-
-
-

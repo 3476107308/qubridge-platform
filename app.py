@@ -32,9 +32,9 @@ try:
         calculate_parallel_pst as standard_calculate_pst,
     )
     STANDARD_MODULE_AVAILABLE = True
-    print("✓ 标准量子分区模块加载成功")
+    print("[OK] 标准量子分区模块加载成功")
 except ImportError as e:
-    print(f"✗ 标准量子分区模块加载失败: {e}")
+    print(f"[ERROR] 标准量子分区模块加载失败: {e}")
     STANDARD_MODULE_AVAILABLE = False
 
 # 尝试导入自适应算法模块
@@ -56,27 +56,27 @@ try:
         calculate_parallel_pst as adaptive_calculate_pst,
     )
     ADAPTIVE_MODULE_AVAILABLE = True
-    print("✓ 自适应量子分区模块加载成功")
+    print("[OK] 自适应量子分区模块加载成功")
 except ImportError as e:
-    print(f"✗ 自适应量子分区模块加载失败: {e}")
+    print(f"[ERROR] 自适应量子分区模块加载失败: {e}")
     ADAPTIVE_MODULE_AVAILABLE = False
 
 # 尝试导入线路逻辑比特分区与拓扑映射模块（融合自「代码/」项目）
 try:
     import routing_partition
     ROUTING_MODULE_AVAILABLE = True
-    print("✓ 线路分区与拓扑映射模块加载成功")
+    print("[OK] 线路分区与拓扑映射模块加载成功")
 except ImportError as e:
     routing_partition = None
     ROUTING_MODULE_AVAILABLE = False
-    print(f"✗ 线路分区与拓扑映射模块加载失败: {e}")
+    print(f"[ERROR] 线路分区与拓扑映射模块加载失败: {e}")
 
 app = Flask(__name__)
-app.config.from_pyfile('ui_config.py')
 app.secret_key = 'quantum-parallel-visualization'
+app.config.from_pyfile('ui_config.py')
 
 # 数据库配置
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('QUBRIDGE_DATABASE_URI', 'sqlite:///users.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 文件上传配置
@@ -126,7 +126,7 @@ class User(db.Model, UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 
 # 创建数据库
@@ -520,6 +520,52 @@ def about():
 @login_required
 def qubit_routing():
     return render_template('qubit-routing.html')
+
+
+@app.route('/qubit-routing/parse', methods=['POST'])
+@login_required
+def parse_routing_qasm():
+    """Parse an uploaded OpenQASM 2 circuit for the routing work queue."""
+    source = request.files.get('qasm_file')
+    if source is None or not source.filename or not allowed_file(source.filename):
+        return jsonify({'success': False, 'error': '请选择 .qasm 文件'}), 400
+
+    raw = source.read(1024 * 1024 + 1)
+    if len(raw) > 1024 * 1024:
+        return jsonify({'success': False, 'error': 'QASM 文件不能超过 1 MB'}), 400
+    try:
+        qasm = raw.decode('utf-8-sig')
+    except UnicodeDecodeError:
+        return jsonify({'success': False, 'error': 'QASM 文件必须采用 UTF-8 编码'}), 400
+
+    try:
+        from qiskit import QuantumCircuit
+    except ImportError:
+        return jsonify({'success': False, 'error': '服务器未安装 Qiskit，请先配置 Python 环境'}), 503
+
+    try:
+        circuit = QuantumCircuit.from_qasm_str(qasm)
+    except Exception as exc:
+        return jsonify({'success': False, 'error': f'QASM 解析失败：{exc}'}), 400
+
+    if not circuit.num_qubits or circuit.num_qubits > 127:
+        return jsonify({'success': False, 'error': '线路必须包含 1–127 个逻辑量子比特'}), 400
+    gates = []
+    for instruction in circuit.data:
+        operation = instruction.operation
+        if operation.name in {'barrier', 'measure'}:
+            continue
+        gates.append({
+            'type': operation.name.upper(),
+            'qubits': [circuit.find_bit(q).index for q in instruction.qubits]
+        })
+        if len(gates) > 2000:
+            return jsonify({'success': False, 'error': '线路最多支持 2000 个量子门'}), 400
+    if not gates:
+        return jsonify({'success': False, 'error': '文件中没有可路由的量子门'}), 400
+    return jsonify({'success': True, 'circuit': {
+        'name': source.filename, 'logicalQubits': circuit.num_qubits, 'gates': gates
+    }})
 
 
 @app.route('/circuit-partition')
@@ -1150,9 +1196,9 @@ if __name__ == '__main__':
     print("=" * 70)
     print("量子线路并行分区可视化系统")
     print("=" * 70)
-    print(f"标准算法模块: {'✓ 已加载' if STANDARD_MODULE_AVAILABLE else '✗ 未加载'}")
-    print(f"自适应算法模块: {'✓ 已加载' if ADAPTIVE_MODULE_AVAILABLE else '✗ 未加载'}")
-    print(f"数据库: {'✓ 已连接' if os.path.exists('users.db') else '✗ 未连接'}")
+    print(f"标准算法模块: {'已加载' if STANDARD_MODULE_AVAILABLE else '未加载'}")
+    print(f"自适应算法模块: {'已加载' if ADAPTIVE_MODULE_AVAILABLE else '未加载'}")
+    print("数据库: 已连接")
     print(f"上传目录: {app.config['UPLOAD_FOLDER']}")
     print(f"默认用户: admin / admin123")
     print("\n访问地址:")

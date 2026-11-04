@@ -1,10 +1,11 @@
-__pycache__/
-*.pyc
-.idea/
-.vscode/
 .venv/
-venv/
+.web-venv/
+.web-tmp/
+.task-tmp/
+__pycache__/
+*.py[cod]
+.idea/
 instance/
 uploads/
 *.log
-.DS_Store
+qubridge-server.*.log
